@@ -32,21 +32,7 @@ namespace BN.Logic.QuickGraphSearchEngine
             return _initializeTask;
         }
 
-        private async Task InitializeInternal(CancellationToken token)
-        {
-            _resortInfrastructure = await _resortInfrastructureProvider.GetResortInfrastructure(token);
-
-            _graph = new BidirectionalGraph<string, Edge<string>>();
-            _graph.AddVertexRange(this._resortInfrastructure.Objects.Select(x => x.Name));
-
-            foreach (var obj in this._resortInfrastructure.Objects)
-            {
-                _graph.AddEdgeRange(obj.Neighbours.Select(x => new Edge<string>(obj.Name, x)));
-            }
-        }
-
-
-        public async Task<ShortestPathResult> FindShortestPath(string @from, string to)
+        public async Task<ShortestPathResult> FindShortestPath(IResortObject @from, IResortObject to)
         {
             await EnsureInitialized();
 
@@ -58,19 +44,32 @@ namespace BN.Logic.QuickGraphSearchEngine
 
             static double EdgeCost(Edge<string> e) => 1;
 
-            var tryGetPaths = _graph.ShortestPathsDijkstra(EdgeCost, result.From);
+            var tryGetPaths = _graph.ShortestPathsDijkstra(EdgeCost, from.Name);
 
-            if (tryGetPaths(result.To, out var tmp))
+            if (tryGetPaths(to.Name, out var tmp))
             {
                 result.IsPathFound = true;
 
                 var path = new List<string>();
                 path.Add(tmp.First().Source);
                 path.AddRange(tmp.Select(x => x.Target));
-                result.Path = path;
+                result.Path = path.Select(x => _resortInfrastructure.Objects.Single(y => y.Name == x));
             }
 
             return result;
+        }
+
+        private async Task InitializeInternal(CancellationToken token)
+        {
+            _resortInfrastructure = await _resortInfrastructureProvider.GetResortInfrastructure(token);
+
+            _graph = new BidirectionalGraph<string, Edge<string>>();
+            _graph.AddVertexRange(this._resortInfrastructure.Objects.Select(x => x.Name));
+
+            foreach (var obj in this._resortInfrastructure.Objects)
+            {
+                _graph.AddEdgeRange(obj.Neighbours.Select(x => new Edge<string>(obj.Name, x)));
+            }
         }
 
         private async Task EnsureInitialized()
