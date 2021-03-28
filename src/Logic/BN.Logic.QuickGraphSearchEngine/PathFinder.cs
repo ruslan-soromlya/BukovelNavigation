@@ -35,9 +35,8 @@ namespace BN.Logic.QuickGraphSearchEngine
         private async Task InitializeInternal(CancellationToken token)
         {
             _resortInfrastructure = await _resortInfrastructureProvider.GetResortInfrastructure(token);
-            
-            _graph = new BidirectionalGraph<string, Edge<string>>();
 
+            _graph = new BidirectionalGraph<string, Edge<string>>();
             _graph.AddVertexRange(this._resortInfrastructure.Objects.Select(x => x.Name));
 
             foreach (var obj in this._resortInfrastructure.Objects)
@@ -45,25 +44,33 @@ namespace BN.Logic.QuickGraphSearchEngine
                 _graph.AddEdgeRange(obj.Neighbours.Select(x => new Edge<string>(obj.Name, x)));
             }
         }
-        
-        
-        public async Task<IList<IResortObject>> FindShortestPath(IResortObject @from, IResortObject to)
+
+
+        public async Task<ShortestPathResult> FindShortestPath(string @from, string to)
         {
             await EnsureInitialized();
 
+            var result = new ShortestPathResult
+            {
+                From = from,
+                To = to
+            };
+
             static double EdgeCost(Edge<string> e) => 1;
 
-            var tryGetPaths = _graph.ShortestPathsDijkstra(EdgeCost, from.Name);
+            var tryGetPaths = _graph.ShortestPathsDijkstra(EdgeCost, result.From);
 
-            var target = to.Name;
-
-            if (tryGetPaths(target, out var path))
+            if (tryGetPaths(result.To, out var tmp))
             {
-                return path.Select(x => _resortInfrastructure.Objects
-                    .Single(y => y.Name == x.Source)).ToList();
+                result.IsPathFound = true;
+
+                var path = new List<string>();
+                path.Add(tmp.First().Source);
+                path.AddRange(tmp.Select(x => x.Target));
+                result.Path = path;
             }
 
-            return Enumerable.Empty<IResortObject>().ToList();
+            return result;
         }
 
         private async Task EnsureInitialized()

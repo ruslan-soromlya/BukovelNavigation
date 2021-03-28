@@ -8,6 +8,6 @@ namespace BN.Logic.Interfaces
     public interface IPathFinder
     {
         Task Initialize(CancellationToken cancellationToken = default(CancellationToken));
-        Task<IList<IResortObject>> FindShortestPath(IResortObject from, IResortObject to);
+        Task<ShortestPathResult> FindShortestPath(string from, string to);
     }
 }
