@@ -27,6 +27,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Logic\BN.Logic.Interfaces\BN.Logic.Interfaces.csproj" />
+      <ProjectReference Include="..\..\..\Logic\BN.Logic.QuickGraphSearchEngine\BN.Logic.QuickGraphSearchEngine.csproj" />
       <ProjectReference Include="..\..\..\Models\BN.Models\BN.Models.csproj" />
     </ItemGroup>
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BN.Logic.Interfaces;
+using BN.Logic.QuickGraphSearchEngine;
 using BN.UI.Console.App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,6 +26,7 @@ namespace BN.UI.Console.App.Configuration
             builder.Populate(serviceCollection);
             builder.RegisterInstance<IResortInfrastructureProvider>(
                 new FromFileResortInfoProvider(ConfigurationManager.AppSettings.Get("ResortInfoFilePath")));
+            builder.RegisterType<PathFinder>().AsImplementedInterfaces();
             builder.RegisterType<AppInstance>().SingleInstance();
 
             var container = builder.Build();

@@ -249,7 +249,7 @@
     "Traffic": 2400,
     "Type": 1,
     "CanBeUsedInNavigation": true,
-    "Neighbours": [ "15E", "15D" ]
+    "Neighbours": [ "15E", "15D", "H14" ]
   },
   {
     "$type": "BN.Models.Lift, BN.Models",
