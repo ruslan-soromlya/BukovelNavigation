@@ -23,9 +23,9 @@ namespace BN.UI.Console.App
 
             System.Console.WriteLine("Loaded resort objects number: " + resortInfo.Objects.Count);
             await _pathFinder.Initialize();
-            var path = await _pathFinder.FindShortestPath(r["L15"], r["L13"]);
+            var path = await _pathFinder.FindShortestPath(r["L1"], r["H12"]);
 
-            System.Console.WriteLine($"Path from {r["L15"].Name} to {r["L13"].Name} " + string.Join(" - ", path.Select(x => x.Name)));
+            System.Console.WriteLine($"Path from {r["L1"].Name} to {r["H12"].Name} " + string.Join(" - ", path.Select(x => x.Name)));
             
             
         }

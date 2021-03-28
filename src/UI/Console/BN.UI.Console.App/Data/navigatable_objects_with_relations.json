@@ -25,7 +25,7 @@
     "Traffic": 1800,
     "Type": 0,
     "CanBeUsedInNavigation": true,
-    "Neighbours": [ "9A" ]
+    "Neighbours": [ "9A", "13A" ]
   },
   {
     "$type": "BN.Models.Lift, BN.Models",
@@ -249,7 +249,7 @@
     "Traffic": 2400,
     "Type": 1,
     "CanBeUsedInNavigation": true,
-    "Neighbours": [ "15E", "15D", "H14" ]
+    "Neighbours": [ "22B", "22C", "22A", "14B", "15E", "15D", "14A" ]
   },
   {
     "$type": "BN.Models.Lift, BN.Models",
@@ -333,7 +333,7 @@
     "Traffic": 2800,
     "Type": 1,
     "CanBeUsedInNavigation": true,
-    "Neighbours": [ "11F", "11C", "11A", "11B" ]
+    "Neighbours": [ "16D", "16E", "16A", "16C", "16B", "11A", "11B", "11C", "11F" ]
   },
   {
     "$type": "BN.Models.Lift, BN.Models",
