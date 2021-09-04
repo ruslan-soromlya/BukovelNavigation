@@ -17,7 +17,7 @@ namespace BN.UI.Console.App.Services
             _path = pathToResoltInfoFile;
         }
 
-        public async Task<ResortInfrastructure> GetResortInfrastructure(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<ResortInfrastructure> GetResortInfrastructure(CancellationToken cancellationToken = default)
         {
             var content = await File.ReadAllTextAsync(_path, cancellationToken);
             var objects = JsonConvert.DeserializeObject<IList<IResortObject>>(content,

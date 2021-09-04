@@ -6,6 +6,6 @@ namespace BN.Logic.Interfaces
 {
     public interface IResortInfrastructureProvider
     {
-        Task<ResortInfrastructure> GetResortInfrastructure(CancellationToken token = default(CancellationToken));
+        Task<ResortInfrastructure> GetResortInfrastructure(CancellationToken token = default);
     }
 }

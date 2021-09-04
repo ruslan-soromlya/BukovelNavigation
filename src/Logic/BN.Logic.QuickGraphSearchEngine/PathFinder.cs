@@ -24,7 +24,7 @@ namespace BN.Logic.QuickGraphSearchEngine
             _resortInfrastructureProvider = resortInfrastructureProvider;
         }
 
-        public Task Initialize(CancellationToken token = default(CancellationToken))
+        public Task Initialize(CancellationToken token = default)
         {
             if (_initializeTask != null) return _initializeTask;
 
@@ -50,8 +50,10 @@ namespace BN.Logic.QuickGraphSearchEngine
             {
                 result.IsPathFound = true;
 
-                var path = new List<string>();
-                path.Add(tmp.First().Source);
+                var path = new List<string>
+                {
+                    tmp.First().Source
+                };
                 path.AddRange(tmp.Select(x => x.Target));
                 result.Path = path.Select(x => _resortInfrastructure.Objects.Single(y => y.Name == x));
             }

@@ -8,7 +8,7 @@ namespace BN.Logic.SearchEngines.Tests.Helpers
 {
     public class ResortInfoBuiler
     {
-        private Dictionary<string, List<string>> _resortInfo { get; set; } = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> ResortInfo { get; set; } = new Dictionary<string, List<string>>();
         
 
         public ResortInfoBuiler ParseABNRelation(string abRelation)
@@ -20,27 +20,29 @@ namespace BN.Logic.SearchEngines.Tests.Helpers
                 var from = verticies[i];
                 var to = verticies[i + 1];
 
-                if (_resortInfo.ContainsKey(from))
+                if (ResortInfo.ContainsKey(from))
                 {
-                    _resortInfo[from].Add(to);
+                    ResortInfo[from].Add(to);
                 }
                 else
                 {
-                    _resortInfo[from] = new List<string> { to };
+                    ResortInfo[from] = new List<string> { to };
                 }
             }
 
-            _resortInfo[verticies.Last()] = new List<string>();
+            ResortInfo[verticies.Last()] = new List<string>();
 
             return this;
         }
 
         public ResortInfrastructure Build()
         {
-            var result = new ResortInfrastructure();
-            result.Objects = new List<IResortObject>();
+            var result = new ResortInfrastructure
+            {
+                Objects = new List<IResortObject>()
+            };
 
-            foreach(var item in _resortInfo)
+            foreach (var item in ResortInfo)
             {
                 var obj = new ResortObjectTestObject(item.Key, item.Value);
                 result.Objects.Add(obj);
