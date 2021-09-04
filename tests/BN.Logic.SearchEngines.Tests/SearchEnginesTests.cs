@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using BN.Logic.Interfaces;
 using BN.Logic.SearchEngines.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,13 +12,18 @@ namespace BN.Logic.SearchEngines.Tests
     [TestClass]
     public class SearchEnginesTests
     {
-        [TestMethod]
-        public async Task CanFindSimplePath()
+        [DataTestMethod]
+        [DataRow(new string [] {"A-B-C"}, "A", "C", "A-B-C", DisplayName = "ABC")]
+        [DataRow(new string [] {"A-B", "B-C"}, "A", "C", "A-B-C", DisplayName = "ABC different syntax")]
+        public async Task QuickGraphPathFinder_ShouldFindShortestPath(string[] relations, string from, string to, string expectedPath)
         {
-            var builder = new ResortInfoBuiler();
-            var resortInfo = builder.ParseABNRelation("A - B - C").Build();
+            var builder = new ResortInfoBuilder();
+            foreach (var relation in relations)
+            {
+                builder = builder.ParseABNRelation(relation);
+            }
 
-
+            var resortInfo = builder.Build();
 
             var provider = new Mock<IResortInfrastructureProvider>();
             provider.Setup(x => x.GetResortInfrastructure(It.IsAny<CancellationToken>()))
@@ -29,8 +35,7 @@ namespace BN.Logic.SearchEngines.Tests
 
             var result = await engine.FindShortestPath("A", "C");
 
-            Assert.IsTrue(result.IsPathFound);
-            Assert.IsTrue(result.Path.Count() == 3);
+            Assert.AreEqual(expectedPath, result.ToStringPath());
         }
     }
 }
